@@ -67,7 +67,7 @@ export type Provides = Array<ProvidePair | Newable<unknown>>
 
 export interface Props {
   /** 提供（provide）的信息集合 */
-  provides?: Provides
+  provides: Provides
   /** 指定的依赖注入容器 */
   container?: IContainer
   /** 构造依赖注入容器的选项 */
@@ -115,28 +115,22 @@ export default function Provider(props: Props) {
     return item
   })
   if (provides) {
-    provides.forEach((provide: any) => {
+    provides.forEach((provide: ProvidePair) => {
       if (isConstrProvidePair(provide)) {
+        // 每次从容器中取出来的是一个新的实例
         container.bind(provide.identifier).to(provide.constr)
         return
       }
       if (isValueProvidePair(provide)) {
+        // {identifier: XXXX, value: new XXX()}, XXXX 实例被注入, 从容器中取出来的是同一个实例
         container.bind(provide.identifier).toConstantValue(provide.value)
         return
       }
       if (isFactoryProvidePair(provide)) {
-        container.bind(provide.identifier).toDynamicValue((context) => provide.factory(context.container.get.bind(context.container)))
+        // 通过工厂函数来创建实例
+        container.bind(provide.identifier).toDynamicValue((context) => provide.factory(identifier => context.container.get(identifier)))
         return
       }
-      // if ('constr' in provide) {
-      //   container.bind(provide.identifier).to(provide.constr)
-      // } else if ('value' in provide) {
-      //   container.bind(provide.identifier).toConstantValue(provide.value)
-      // } else if ('factory' in provide) {
-      //   container.bind(provide.identifier).toDynamicValue((context) => provide.factory(context.container.get.bind(context.container)))
-      // } else {
-      //   throw new Error('Invalid provide pair')
-      // }
     })
   }
 

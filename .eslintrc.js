@@ -8,7 +8,7 @@ module.exports = {
   parserOptions: {
     project: "./tsconfig.json",
   },
-  plugins: ["@typescript-eslint"],
+  plugins: ["@typescript-eslint", 'react', 'react-hooks'],
   settings: {
     'import/resolver': {
       node: {
@@ -26,5 +26,6 @@ module.exports = {
     '@typescript-eslint/no-explicit-any': 'off',
     'semi': ['error', 'never'],
     '@typescript-eslint/no-unused-vars': 'warn',
+    'react-hooks/exhaustive-deps': 'warn',
   },
 }
