@@ -65,3 +65,17 @@ enum Status {
 }
 
 type StatusKeys = keyof typeof Status // "success" | "error" | "warning" | "cancel"
+
+type Provider<V = unknown, T = V> = {
+  name: V,
+  age: T
+}
+
+const pro = {
+  name: 'John',
+  age: '30'
+}
+
+function isPro(v: any): v is Provider {
+  return v && v.name && v.age
+}

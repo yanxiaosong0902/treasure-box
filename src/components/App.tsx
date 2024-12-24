@@ -6,8 +6,8 @@ import { observer } from 'mobx-react'
 
 const provides: Provides = [
   Client,
-  // UserApis,
-  { identifier: UserApis, constr: UserApis},
+  UserApis,
+  // { identifier: UserApis, constr: UserApis},
   { identifier: FinancialApis, value: new FinancialApis()},
 ]
 
@@ -22,6 +22,7 @@ export default observer(function App() {
         <button onClick={() => server.add()}>add age</button>
         <Child />
         <Brother />
+        <MemoizedChild />
       </div>
     </BootProvider>
   )
@@ -58,4 +59,9 @@ const Child = observer(() => {
       <p>Child component</p>
     </div>
   )
+})
+
+const MemoizedChild = React.memo(() => {
+  console.log('123')
+  return <div>test memo</div>
 })
